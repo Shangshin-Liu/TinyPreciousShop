@@ -49,6 +49,11 @@
         <h1 class="product-title">{{ product.product_name }}</h1>
         <div class="price-tag">NT$ {{ product.price }}</div>
 
+        <!-- 動態關注度顯示 -->
+        <div v-if="getProductFavoritesCount > 0" class="detail-interest-badge">
+          <span>🔥 目前關注度：{{ getProductFavoritesCount }} 人收藏</span>
+        </div>
+
         <!-- 商品規格區 -->
         <div class="specs-box card-cute">
           <h3 class="specs-title">📐 商品規格</h3>
@@ -73,20 +78,14 @@
         <!-- 操作按鈕 -->
         <div class="action-buttons">
           <button 
-            class="btn-cute btn-secondary add-cart-btn"
-            :class="{ 'btn-disabled': product.status === 'sold' }"
+            class="btn-cute favorite-detail-btn"
+            :class="[
+              product.status === 'sold' ? 'btn-disabled' : (isProductFavorited ? 'btn-secondary' : 'btn-primary')
+            ]"
             :disabled="product.status === 'sold'"
-            @click="$emit('add-to-cart', product)"
+            @click="emit('toggle-favorite', product)"
           >
-            🛒 加入購物車
-          </button>
-          <button 
-            class="btn-cute btn-primary buy-now-btn"
-            :class="{ 'btn-disabled': product.status === 'sold' }"
-            :disabled="product.status === 'sold'"
-            @click="$emit('buy-now', product)"
-          >
-            💖 立即購買
+            {{ product.status === 'sold' ? '❤️ 已售出 (不可收藏)' : (isProductFavorited ? '💔 移除收藏' : '❤️ 收藏此商品') }}
           </button>
         </div>
 
@@ -120,10 +119,25 @@ const props = defineProps({
   isAdmin: {
     type: Boolean,
     default: false
+  },
+  favorites: {
+    type: Array,
+    default: () => []
   }
 });
 
-defineEmits(['go-back', 'add-to-cart', 'buy-now', 'edit-product']);
+const emit = defineEmits(['go-back', 'edit-product', 'toggle-favorite']);
+
+const isProductFavorited = computed(() => {
+  if (!props.product || !props.favorites) return false;
+  return props.favorites.some(item => item.id === props.product.id);
+});
+
+const getProductFavoritesCount = computed(() => {
+  if (!props.product) return 0;
+  const base = parseInt(props.product.favoritesCount) || 0;
+  return isProductFavorited.value ? base + 1 : base;
+});
 
 const activeImage = ref('');
 
@@ -342,14 +356,30 @@ const getCategoryLabel = (cat) => {
   white-space: pre-wrap;
 }
 
-/* 按鈕 */
-.action-buttons {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
+/* 動態關注度標籤 */
+.detail-interest-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--bg-mint);
+  border: var(--border-thin);
+  border-radius: 50px;
+  padding: 6px 16px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-wood);
+  align-self: flex-start;
+  margin-top: -5px;
+  margin-bottom: 5px;
 }
 
-.add-cart-btn, .buy-now-btn {
+/* 按鈕 */
+.action-buttons {
+  display: block;
+}
+
+.favorite-detail-btn {
+  width: 100%;
   padding: 14px 20px;
   font-size: 1.1rem;
 }

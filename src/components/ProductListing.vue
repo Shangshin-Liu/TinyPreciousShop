@@ -127,7 +127,7 @@
             <button 
               v-if="isAdmin && product.status !== 'sold'" 
               class="edit-pencil-btn" 
-              @click.stop="$emit('edit-product', product)"
+              @click.stop="emit('edit-product', product)"
               title="編輯商品"
               aria-label="編輯商品"
             >
@@ -135,6 +135,18 @@
             </button>
 
             <div class="product-img-wrapper">
+              <!-- 收藏愛心按鈕 (已售出不可收藏也不顯示此按鈕) -->
+              <button 
+                v-if="product.status !== 'sold'"
+                class="favorite-heart-btn"
+                :class="{ 'is-favorited': isProductFavorited(product) }"
+                @click.stop="emit('toggle-favorite', product)"
+                :title="isProductFavorited(product) ? '取消收藏' : '加入收藏'"
+                :aria-label="isProductFavorited(product) ? '取消收藏' : '加入收藏'"
+              >
+                {{ isProductFavorited(product) ? '❤️' : '🤍' }}
+              </button>
+
               <img :src="product.image_urls.split(',')[0]" :alt="product.product_name" class="product-img" />
               <div v-if="product.status === 'sold'" class="sold-overlay">
                 <span class="sold-text">已售出</span>
@@ -145,6 +157,7 @@
               <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
                 <span class="badge badge-pink category-tag">{{ getCategoryLabel(product.category) }}</span>
                 <span v-if="product.status === 'hidden'" class="badge badge-sold" style="font-size: 0.75rem; padding: 2px 8px;">隱藏中</span>
+                <span v-if="getProductFavoritesCount(product) > 0" class="badge badge-mint category-tag" style="background-color: var(--bg-mint); border-color: #A3D9C9;">🔥 關注度：{{ getProductFavoritesCount(product) }}</span>
               </div>
               <h3 class="product-name" :title="product.product_name">{{ product.product_name }}</h3>
               
@@ -175,10 +188,23 @@ const props = defineProps({
   initialCategory: {
     type: String,
     default: 'accessories'
+  },
+  favorites: {
+    type: Array,
+    default: () => []
   }
 });
 
-defineEmits(['view-product', 'edit-product']);
+const emit = defineEmits(['view-product', 'edit-product', 'toggle-favorite']);
+
+const isProductFavorited = (product) => {
+  return props.favorites.some(item => item.id === product.id);
+};
+
+const getProductFavoritesCount = (product) => {
+  const base = parseInt(product.favoritesCount) || 0;
+  return isProductFavorited(product) ? base + 1 : base;
+};
 
 // 手機版篩選器展開狀態，預設為收合 (false)
 const isFilterExpanded = ref(false);
@@ -448,6 +474,40 @@ const filteredProducts = computed(() => {
 .no-products p {
   font-size: 0.9rem;
   color: var(--color-wood-light);
+}
+
+/* 收藏心形按鈕 */
+.favorite-heart-btn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 10;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: var(--border-thin);
+  background-color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 2px 2px 0px var(--color-wood);
+  transition: transform 0.1s, background-color 0.15s;
+  font-size: 0.95rem;
+}
+
+.favorite-heart-btn:hover {
+  transform: scale(1.1);
+  background-color: #FFF;
+}
+
+.favorite-heart-btn:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0px var(--color-wood);
+}
+
+.favorite-heart-btn.is-favorited {
+  background-color: var(--bg-pink);
 }
 
 @media (max-width: 900px) {

@@ -9,7 +9,8 @@
     "condition": "全新僅試戴。手作陶瓷製品，每隻小貓表情略有不同，極為精緻可愛。附完整包裝盒。",
     "image_urls": "/images/cat_earrings.png",
     "status": "active",
-    "isHot": true
+    "isHot": true,
+    "favoritesCount": 28
   },
   {
     "id": "2",
@@ -21,7 +22,8 @@
     "condition": "95% 新。花瓣部分為透光樹脂，金屬戒台有些微自然收存痕跡，已做基礎清潔。",
     "image_urls": "/images/sakura_ring.png",
     "status": "active",
-    "isHot": true
+    "isHot": true,
+    "favoritesCount": 13
   },
   {
     "id": "3",
@@ -33,7 +35,8 @@
     "condition": "全新。獨特溫潤陶瓷質感，可愛度破表。",
     "image_urls": "/images/cat_earrings.png",
     "status": "active",
-    "isHot": true
+    "isHot": true,
+    "favoritesCount": 14
   },
   {
     "id": "4",
@@ -45,7 +48,8 @@
     "condition": "全新。櫻花粉嫩透亮，點綴春日氣息。",
     "image_urls": "/images/sakura_ring.png",
     "status": "active",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 2
   },
   {
     "id": "5",
@@ -57,7 +61,8 @@
     "condition": "全新。貓奴必收手工小物！",
     "image_urls": "/images/cat_earrings.png",
     "status": "active",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 7
   },
   {
     "id": "6",
@@ -69,7 +74,8 @@
     "condition": "全新。晶瑩剔透的花瓣，少女心滿滿。",
     "image_urls": "/images/sakura_ring.png",
     "status": "active",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 3
   },
   {
     "id": "7",
@@ -81,7 +87,8 @@
     "condition": "全新。表情生動的陶瓷小貓耳環。",
     "image_urls": "/images/cat_earrings.png",
     "status": "active",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 6
   },
   {
     "id": "8",
@@ -93,7 +100,8 @@
     "condition": "全新。非常適合日常搭配的櫻花戒指。",
     "image_urls": "/images/sakura_ring.png",
     "status": "active",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 1
   },
   {
     "id": "9",
@@ -105,7 +113,8 @@
     "condition": "全新。手作限量，質感極佳。",
     "image_urls": "/images/cat_earrings.png",
     "status": "active",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 3
   },
   {
     "id": "10",
@@ -117,7 +126,8 @@
     "condition": "全新。給人暖心印象的可愛小戒指。",
     "image_urls": "/images/sakura_ring.png",
     "status": "active",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 3
   },
   {
     "id": "11",
@@ -129,7 +139,8 @@
     "condition": "全新。軟萌小貓咪手作耳針。",
     "image_urls": "/images/cat_earrings.png",
     "status": "active",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 2
   },
   {
     "id": "12",
@@ -141,7 +152,8 @@
     "condition": "全新。適合做為閨蜜禮物的櫻花調整戒。",
     "image_urls": "/images/sakura_ring.png",
     "status": "active",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 8
   },
   {
     "id": "13",
@@ -153,7 +165,8 @@
     "condition": "99% 新。購回後僅作為拍照擺飾，無任何髒污、異味或破損，毛質依然蓬鬆柔軟。",
     "image_urls": "/images/plush_rabbit.png",
     "status": "active",
-    "isHot": true
+    "isHot": true,
+    "favoritesCount": 23
   },
   {
     "id": "14",
@@ -165,7 +178,8 @@
     "condition": "全新手作。針戳結實、表面少浮毛。可掛於包包或鑰匙圈，為日常增添滿滿的療癒感。",
     "image_urls": "/images/bear_pendant.png",
     "status": "active",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 4
   },
   {
     "id": "15",
@@ -177,7 +191,8 @@
     "condition": "全新。摸起來超舒服的黃圍巾小兔。",
     "image_urls": "/images/plush_rabbit.png",
     "status": "active",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 6
   },
   {
     "id": "16",
@@ -189,7 +204,8 @@
     "condition": "全新。手作溫馨質感的小掛飾。",
     "image_urls": "/images/bear_pendant.png",
     "status": "active",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 1
   },
   {
     "id": "17",
@@ -201,7 +217,8 @@
     "condition": "全新。圓滾滾小兔，抱著就捨不得放手。",
     "image_urls": "/images/plush_rabbit.png",
     "status": "active",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 1
   },
   {
     "id": "18",
@@ -213,7 +230,8 @@
     "condition": "全新。純羊毛戳製，每隻都有獨特的小萌表情。",
     "image_urls": "/images/bear_pendant.png",
     "status": "active",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 6
   },
   {
     "id": "19",
@@ -225,7 +243,8 @@
     "condition": "全新。超療癒表情的小白兔玩偶。",
     "image_urls": "/images/plush_rabbit.png",
     "status": "active",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 7
   },
   {
     "id": "20",
@@ -237,7 +256,8 @@
     "condition": "全新。純手工打造暖心熊熊吊飾。",
     "image_urls": "/images/bear_pendant.png",
     "status": "active",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 7
   },
   {
     "id": "21",
@@ -249,7 +269,8 @@
     "condition": "全新。拍照擺設必備的可愛小兔兔。",
     "image_urls": "/images/plush_rabbit.png",
     "status": "active",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 0
   },
   {
     "id": "22",
@@ -261,7 +282,8 @@
     "condition": "全新。紮實飽滿的羊毛氈手工熊。",
     "image_urls": "/images/bear_pendant.png",
     "status": "active",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 0
   },
   {
     "id": "23",
@@ -273,7 +295,8 @@
     "condition": "全新。黃色圍巾可拆下，表情無敵療癒。",
     "image_urls": "/images/plush_rabbit.png",
     "status": "active",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 1
   },
   {
     "id": "24",
@@ -285,7 +308,8 @@
     "condition": "全新。附贈精美小包裝，適合送禮送療癒。",
     "image_urls": "/images/bear_pendant.png",
     "status": "active",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 1
   },
   {
     "id": "25",
@@ -297,7 +321,8 @@
     "condition": "二手。底部有些微放置桌面產生的磨損痕跡，杯身無任何缺角或裂縫。適合暖奶或下午茶。",
     "image_urls": "/images/strawberry_cup.png",
     "status": "active",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 7
   },
   {
     "id": "26",
@@ -309,7 +334,8 @@
     "condition": "全新。經典草莓手繪，溫暖日系下午茶風格。",
     "image_urls": "/images/strawberry_cup.png",
     "status": "active",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 7
   },
   {
     "id": "27",
@@ -321,7 +347,8 @@
     "condition": "全新。手感圓滑，非常適合聖誕送禮或自用。",
     "image_urls": "/images/strawberry_cup.png",
     "status": "active",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 4
   },
   {
     "id": "28",
@@ -333,7 +360,8 @@
     "condition": "全新。草莓花紋細緻，高溫釉下彩極佳。",
     "image_urls": "/images/strawberry_cup.png",
     "status": "active",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 0
   },
   {
     "id": "29",
@@ -345,7 +373,8 @@
     "condition": "全新。質感溫潤，為餐桌添加療癒氛圍。",
     "image_urls": "/images/strawberry_cup.png",
     "status": "active",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 8
   },
   {
     "id": "30",
@@ -357,7 +386,8 @@
     "condition": "全新。附精緻小紙盒，適合送禮。",
     "image_urls": "/images/strawberry_cup.png",
     "status": "active",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 4
   },
   {
     "id": "31",
@@ -369,7 +399,8 @@
     "condition": "全新。非常可愛的草莓造型設計杯。",
     "image_urls": "/images/strawberry_cup.png",
     "status": "active",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 6
   },
   {
     "id": "32",
@@ -381,7 +412,8 @@
     "condition": "全新。經典款釉下彩杯子。",
     "image_urls": "/images/strawberry_cup.png",
     "status": "active",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 7
   },
   {
     "id": "33",
@@ -393,7 +425,8 @@
     "condition": "全新。手工手繪質感，擺在桌上就是裝飾。",
     "image_urls": "/images/strawberry_cup.png",
     "status": "active",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 4
   },
   {
     "id": "34",
@@ -405,7 +438,8 @@
     "condition": "全新。非常厚實溫熱的手握感。",
     "image_urls": "/images/strawberry_cup.png",
     "status": "active",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 0
   },
   {
     "id": "35",
@@ -417,7 +451,8 @@
     "condition": "全新。極簡日系手塗小草莓杯子。",
     "image_urls": "/images/strawberry_cup.png",
     "status": "active",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 5
   },
   {
     "id": "36",
@@ -429,7 +464,8 @@
     "condition": "全新。下午茶沖泡咖啡或熱牛奶最對味。",
     "image_urls": "/images/strawberry_cup.png",
     "status": "active",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 6
   },
   {
     "id": "37",
@@ -441,7 +477,8 @@
     "condition": "二手。已售完留作參考。",
     "image_urls": "/images/cat_earrings.png",
     "status": "sold",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 0
   },
   {
     "id": "38",
@@ -453,7 +490,8 @@
     "condition": "二手。已售完留作參考。",
     "image_urls": "/images/sakura_ring.png",
     "status": "sold",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 2
   },
   {
     "id": "39",
@@ -465,7 +503,8 @@
     "condition": "二手。已售完留作參考。",
     "image_urls": "/images/plush_rabbit.png",
     "status": "sold",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 1
   },
   {
     "id": "40",
@@ -477,7 +516,8 @@
     "condition": "二手。已售完留作參考。",
     "image_urls": "/images/strawberry_cup.png",
     "status": "sold",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 7
   },
   {
     "id": "41",
@@ -489,7 +529,8 @@
     "condition": "二手。已售完留作參考。",
     "image_urls": "/images/cat_earrings.png",
     "status": "sold",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 2
   },
   {
     "id": "42",
@@ -501,7 +542,8 @@
     "condition": "二手。已售完留作參考。",
     "image_urls": "/images/sakura_ring.png",
     "status": "sold",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 7
   },
   {
     "id": "43",
@@ -513,7 +555,8 @@
     "condition": "二手。已售完留作參考。",
     "image_urls": "/images/plush_rabbit.png",
     "status": "sold",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 7
   },
   {
     "id": "44",
@@ -525,7 +568,8 @@
     "condition": "二手。已售完留作參考。",
     "image_urls": "/images/strawberry_cup.png",
     "status": "sold",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 8
   },
   {
     "id": "45",
@@ -537,7 +581,8 @@
     "condition": "二手。已售完留作參考。",
     "image_urls": "/images/cat_earrings.png",
     "status": "sold",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 7
   },
   {
     "id": "46",
@@ -549,7 +594,8 @@
     "condition": "二手。已售完留作參考。",
     "image_urls": "/images/sakura_ring.png",
     "status": "sold",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 6
   },
   {
     "id": "47",
@@ -561,7 +607,8 @@
     "condition": "二手。已售完留作參考。",
     "image_urls": "/images/plush_rabbit.png",
     "status": "sold",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 7
   },
   {
     "id": "48",
@@ -573,6 +620,7 @@
     "condition": "二手。已售完留作參考。",
     "image_urls": "/images/strawberry_cup.png",
     "status": "sold",
-    "isHot": false
+    "isHot": false,
+    "favoritesCount": 0
   }
 ]

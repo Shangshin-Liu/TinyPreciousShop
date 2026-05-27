@@ -40,16 +40,16 @@
       <h3 class="section-title">✨ 熱門商品</h3>
       <div class="grid-products">
         <div 
+          class="product-card"
           v-for="product in hotProducts" 
           :key="product.id" 
-          class="product-card"
-          @click="$emit('view-product', product.id)"
+          @click="emit('view-product', product.id)"
         >
           <!-- 管理暗門編輯鉛筆 (已售出項目不可編輯) -->
           <button 
             v-if="isAdmin && product.status !== 'sold'" 
             class="edit-pencil-btn" 
-            @click.stop="$emit('edit-product', product)"
+            @click.stop="emit('edit-product', product)"
             title="編輯商品"
             aria-label="編輯商品"
           >
@@ -57,13 +57,28 @@
           </button>
 
           <div class="product-img-wrapper">
+            <!-- 收藏愛心按鈕 (已售出不可收藏也不顯示此按鈕) -->
+            <button 
+              v-if="product.status !== 'sold'"
+              class="favorite-heart-btn"
+              :class="{ 'is-favorited': isProductFavorited(product) }"
+              @click.stop="emit('toggle-favorite', product)"
+              :title="isProductFavorited(product) ? '取消收藏' : '加入收藏'"
+              :aria-label="isProductFavorited(product) ? '取消收藏' : '加入收藏'"
+            >
+              {{ isProductFavorited(product) ? '❤️' : '🤍' }}
+            </button>
+
             <img :src="product.image_urls.split(',')[0]" :alt="product.product_name" class="product-img" />
             <div v-if="product.status === 'sold'" class="sold-overlay">
               <span class="sold-text">已售出</span>
             </div>
           </div>
           <div class="product-info">
-            <span class="badge badge-pink category-tag">{{ getCategoryLabel(product.category) }}</span>
+            <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
+              <span class="badge badge-pink category-tag">{{ getCategoryLabel(product.category) }}</span>
+              <span v-if="getProductFavoritesCount(product) > 0" class="badge badge-mint category-tag" style="background-color: var(--bg-mint); border-color: #A3D9C9; font-size: 0.8rem; padding: 2px 10px;">🔥 關注度：{{ getProductFavoritesCount(product) }}</span>
+            </div>
             <h4 class="product-name" :title="product.product_name">{{ product.product_name }}</h4>
             
             <div class="product-footer">
@@ -88,10 +103,22 @@ const props = defineProps({
   isAdmin: {
     type: Boolean,
     default: false
+  },
+  favorites: {
+    type: Array,
+    default: () => []
   }
 });
 
-defineEmits(['select-category', 'view-product', 'edit-product']);
+const emit = defineEmits(['select-category', 'view-product', 'edit-product', 'toggle-favorite']);
+
+const isProductFavorited = (product) => {
+  return props.favorites.some(item => item.id === product.id);
+};
+
+const getProductFavoritesCount = (product) => {
+  return parseInt(product.favoritesCount) || 0;
+};
 
 // 篩選 isHot === true 且狀態非 hidden 的前 4 個商品作為熱門商品
 const hotProducts = computed(() => {
@@ -241,5 +268,39 @@ const getCategoryLabel = (cat) => {
   .hero-title {
     font-size: 1.8rem;
   }
+}
+
+/* 收藏心形按鈕 */
+.favorite-heart-btn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 10;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: var(--border-thin);
+  background-color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 2px 2px 0px var(--color-wood);
+  transition: transform 0.1s, background-color 0.15s;
+  font-size: 0.95rem;
+}
+
+.favorite-heart-btn:hover {
+  transform: scale(1.1);
+  background-color: #FFF;
+}
+
+.favorite-heart-btn:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0px var(--color-wood);
+}
+
+.favorite-heart-btn.is-favorited {
+  background-color: var(--bg-pink);
 }
 </style>

@@ -45,9 +45,19 @@
             id="edit-is-hot"
             type="checkbox"
             v-model="editedProduct.isHot"
+            :disabled="editedProduct.status === 'sold'"
             style="width: 18px; height: 18px; cursor: pointer; accent-color: var(--color-accent);"
           />
-          <label for="edit-is-hot" style="cursor: pointer; margin-bottom: 0; user-select: none; color: var(--color-wood);">🔥 設為熱門商品</label>
+          <label 
+            for="edit-is-hot" 
+            :style="{ 
+              cursor: editedProduct.status === 'sold' ? 'not-allowed' : 'pointer',
+              color: editedProduct.status === 'sold' ? '#BDBDBD' : 'var(--color-wood)'
+            }"
+            style="margin-bottom: 0; user-select: none;"
+          >
+            🔥 設為熱門商品 {{ editedProduct.status === 'sold' ? '(已售出商品不可設為熱門)' : '' }}
+          </label>
         </div>
 
         <!-- 分類選擇 -->
@@ -121,7 +131,7 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue';
+import { ref, reactive, watch } from 'vue';
 
 const props = defineProps({
   product: {
@@ -155,6 +165,12 @@ const editedProduct = reactive(props.product ? { ...props.product } : {
   image_urls: '/images/cat_earrings.png',
   status: 'active',
   isHot: false
+});
+
+watch(() => editedProduct.status, (newStatus) => {
+  if (newStatus === 'sold') {
+    editedProduct.isHot = false;
+  }
 });
 
 const handleSave = () => {

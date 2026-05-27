@@ -40,7 +40,7 @@
             ☕ 雜貨小舖
           </button>
           <button 
-            class="nav-btn nav-sold-btn pc-only" 
+            class="nav-btn nav-sold-btn" 
             :class="{ active: currentPage === 'listing' && currentCategory === 'sold' }"
             @click="navigate('listing', 'sold')"
           >
@@ -48,26 +48,18 @@
           </button>
         </nav>
 
-        <!-- 右側：管理員標記與購物車 -->
+        <!-- 右側：管理員標記與我的收藏 -->
         <div class="header-right">
           <!-- 管理員標記 -->
           <span v-if="isAdmin" class="admin-badge" @click="logoutAdmin" title="點擊登出管理員">
-            🔧 管理模式 (登出)
+            <span class="pc-only">🔧 管理模式 (登出)</span>
+            <span class="mobile-only">🔧 登出</span>
           </span>
 
-          <!-- 購物車圖示 -->
-          <button class="cart-trigger-btn" @click="toggleCart" aria-label="打開購物車">
-            🛒 購物車
-            <span class="cart-count" v-if="cartCount > 0">{{ cartCount }}</span>
-          </button>
-
-          <!-- 手機版專屬已售出按鈕 -->
-          <button 
-            class="mobile-only-sold" 
-            :class="{ active: currentPage === 'listing' && currentCategory === 'sold' }"
-            @click="navigate('listing', 'sold')"
-          >
-            🎉 已售出
+          <!-- 我的收藏圖示 -->
+          <button class="cart-trigger-btn" @click="toggleFavorites" aria-label="打開我的收藏">
+            ❤️ <span class="pc-only">我的收藏</span><span class="mobile-only">收藏</span>
+            <span class="cart-count" v-if="favoritesCount > 0">{{ favoritesCount }}</span>
           </button>
         </div>
       </div>
@@ -82,12 +74,12 @@
           :isAdmin="isAdmin"
           :initialCategory="currentCategory"
           :product="selectedProduct"
+          :favorites="favorites"
           @select-category="handleCategorySelect"
           @view-product="handleViewProduct"
           @edit-product="openEditModal"
           @go-back="navigate('listing', currentCategory)"
-          @add-to-cart="addToCart"
-          @buy-now="buyNow"
+          @toggle-favorite="toggleFavorite"
         />
       </KeepAlive>
     </main>
@@ -100,38 +92,40 @@
       </div>
     </footer>
 
-    <!-- 購物車側欄抽屜 -->
-    <div class="cart-drawer-overlay" v-if="isCartOpen" @click.self="toggleCart">
+    <!-- 我的收藏側欄抽屜 -->
+    <div class="cart-drawer-overlay" v-if="isFavoritesOpen" @click.self="toggleFavorites">
       <div class="cart-drawer card-cute">
-        <button class="modal-close" @click="toggleCart">×</button>
-        <h3 class="cart-title">🛍️ 你的購物車</h3>
+        <button class="modal-close" @click="toggleFavorites">×</button>
+        <h3 class="cart-title">❤️ 我的收藏</h3>
         
-        <div v-if="cart.length === 0" class="empty-cart-view">
-          <span class="empty-cart-emoji">🛒</span>
-          <p>購物車空空如也，快去挑選一些療癒小物吧！</p>
+        <div v-if="favorites.length === 0" class="empty-cart-view">
+          <span class="empty-cart-emoji">❤️</span>
+          <p>收藏清單空空如也，快去尋找一些有興趣的小物吧！</p>
         </div>
         
         <div v-else class="cart-items-container">
-          <div class="cart-item" v-for="item in cart" :key="item.id">
+          <div 
+            class="cart-item favorite-item-clickable" 
+            v-for="item in favorites" 
+            :key="item.id"
+            @click="goToProductDetail(item.id)"
+            title="點擊查看商品詳情"
+          >
             <img :src="item.image_urls.split(',')[0]" :alt="item.product_name" class="cart-item-img" />
             <div class="cart-item-info">
               <h4 class="cart-item-name">{{ item.product_name }}</h4>
               <div class="cart-item-price">NT$ {{ item.price }}</div>
             </div>
-            <button class="cart-item-remove" @click="removeFromCart(item.id)" title="移除">🗑️</button>
+            <button class="cart-item-remove" @click.stop="toggleFavorite(item)" title="移除">🗑️</button>
           </div>
 
           <div class="cart-summary">
             <div class="summary-row">
-              <span>商品總數：</span>
-              <span>{{ cartCount }} 件</span>
+              <span>收藏總數：</span>
+              <span>{{ favoritesCount }} 件</span>
             </div>
-            <div class="summary-row total-row">
-              <span>合計金額：</span>
-              <span class="total-price">NT$ {{ cartTotal }}</span>
-            </div>
-            <button class="btn-cute btn-primary checkout-btn" @click="handleCheckout">
-              💳 立即結帳
+            <button class="btn-cute btn-primary checkout-btn" @click="copyShareLink">
+              🔗 複製分享連結
             </button>
           </div>
         </div>
@@ -162,8 +156,8 @@ const products = ref(initialProducts);
 const currentPage = ref('homepage'); // 'homepage', 'listing', 'detail'
 const currentCategory = ref('accessories');
 const selectedProductId = ref(null);
-const cart = ref([]);
-const isCartOpen = ref(false);
+const favorites = ref([]);
+const isFavoritesOpen = ref(false);
 
 // 管理員暗門狀態
 const isAdmin = ref(false);
@@ -360,58 +354,126 @@ const mockGASDelete = (id, password) => {
   });
 };
 
-// 購物車邏輯
-const toggleCart = () => {
-  isCartOpen.value = !isCartOpen.value;
-};
+// 我的收藏邏輯
+const contributedFavs = ref([]);
 
-const cartCount = computed(() => cart.value.length);
-const cartTotal = computed(() => {
-  return cart.value.reduce((total, item) => total + item.price, 0);
-});
-
-const addToCart = (product) => {
-  // 檢查是否重複加入
-  const exists = cart.value.some(item => item.id === product.id);
-  if (exists) {
-    alert('這件獨一無二的小物已經在購物車裡囉！');
-    return;
+const loadContributedFavs = () => {
+  try {
+    const data = localStorage.getItem('contributed_favs');
+    if (data) {
+      contributedFavs.value = JSON.parse(data) || [];
+    }
+  } catch (e) {
+    console.error('Failed to load contributed_favs', e);
   }
-  cart.value.push(product);
-  alert(`🛒 已將「${product.product_name}」加入購物車！`);
-};
 
-const buyNow = (product) => {
-  // 檢查是否已在購物車
-  const exists = cart.value.some(item => item.id === product.id);
-  if (!exists) {
-    cart.value.push(product);
-  }
-  isCartOpen.value = true;
-};
-
-const removeFromCart = (id) => {
-  cart.value = cart.value.filter(item => item.id !== id);
-};
-
-const handleCheckout = () => {
-  alert(`🎉 結帳成功！總金額 NT$ ${cartTotal.value}\n感謝您的購買，我們會盡快為您安排出貨！`);
-  // 清空購物車，並更新商品狀態為已售出 (模擬購買成功後 database 狀態變更)
-  cart.value.forEach(item => {
-    const idx = products.value.findIndex(p => p.id === item.id);
-    if (idx !== -1) {
-      products.value[idx].status = 'sold';
+  // 對於所有已在 contributedFavs 裡的商品，進行 favoritesCount 的初始化補償 +1
+  contributedFavs.value.forEach(id => {
+    const prod = products.value.find(p => p.id === id.toString());
+    if (prod) {
+      prod.favoritesCount = (parseInt(prod.favoritesCount) || 0) + 1;
     }
   });
-  cart.value = [];
-  isCartOpen.value = false;
 };
 
-// Mounted 時讀取 sessionStorage 是否有登入過
+const toggleFavorites = () => {
+  isFavoritesOpen.value = !isFavoritesOpen.value;
+  if (isFavoritesOpen.value) {
+    // 開啟抽屜時，自動移出已售出的收藏項目 (比對 products 中最新 status)
+    favorites.value = favorites.value.filter(item => {
+      const latestProd = products.value.find(p => p.id === item.id.toString());
+      return latestProd ? latestProd.status !== 'sold' : false;
+    });
+  }
+};
+
+const goToProductDetail = (id) => {
+  isFavoritesOpen.value = false;
+  handleViewProduct(id);
+};
+
+const favoritesCount = computed(() => favorites.value.length);
+
+const toggleFavorite = (product) => {
+  const index = favorites.value.findIndex(item => item.id === product.id);
+  if (index !== -1) {
+    // 移出收藏
+    favorites.value.splice(index, 1);
+  } else {
+    // 加入收藏
+    // 限制已售出商品不可收藏
+    if (product.status === 'sold') return;
+
+    favorites.value.push(product);
+
+    // 檢查是否為此瀏覽器首次收藏該商品
+    const hasContributed = contributedFavs.value.includes(product.id.toString());
+    if (!hasContributed) {
+      // 記錄該商品 ID，並將關注度直接 +1
+      contributedFavs.value.push(product.id.toString());
+      product.favoritesCount = (parseInt(product.favoritesCount) || 0) + 1;
+      
+      // 持久化至 LocalStorage
+      try {
+        localStorage.setItem('contributed_favs', JSON.stringify(contributedFavs.value));
+      } catch (e) {
+        console.error('Failed to save contributed_favs', e);
+      }
+    }
+  }
+};
+
+// 複製分享連結
+const copyShareLink = async () => {
+  if (favorites.value.length === 0) return;
+  const ids = favorites.value.map(item => item.id).join(',');
+  const shareUrl = `${window.location.origin}${window.location.pathname}?favs=${ids}`;
+  try {
+    await navigator.clipboard.writeText(shareUrl);
+    alert('🎉 已複製收藏分享連結！分享給朋友吧 ❤️');
+  } catch (err) {
+    alert(`❌ 複製失敗：${err.message}`);
+  }
+};
+
+// Mounted 時讀取 sessionStorage 是否有登入過，並解析分享連結的收藏商品
 onMounted(() => {
   const savedPassword = sessionStorage.getItem('admin_password');
   if (savedPassword === 'admin123') {
     isAdmin.value = true;
+  }
+  
+  // 1. 載入並校正本地已貢獻關注度
+  loadContributedFavs();
+  
+  // 2. 解析分享連結中的 favs 參數
+  const params = new URLSearchParams(window.location.search);
+  const favsParam = params.get('favs');
+  if (favsParam) {
+    const ids = favsParam.split(',').map(id => id.trim()).filter(Boolean);
+    ids.forEach(id => {
+      const prod = products.value.find(p => p.id === id);
+      // 排除已售出的商品
+      if (prod && prod.status !== 'sold' && !favorites.value.some(item => item.id === prod.id)) {
+        favorites.value.push(prod);
+        
+        // 分享連結載入時，若該商品 ID 不在 contributedFavs 裡，也算入第一次貢獻
+        const hasContributed = contributedFavs.value.includes(prod.id.toString());
+        if (!hasContributed) {
+          contributedFavs.value.push(prod.id.toString());
+          prod.favoritesCount = (parseInt(prod.favoritesCount) || 0) + 1;
+        }
+      }
+    });
+    // 儲存一次 contributedFavs
+    try {
+      localStorage.setItem('contributed_favs', JSON.stringify(contributedFavs.value));
+    } catch (e) {}
+
+    // 自動開啟我的收藏抽屜，讓使用者看到載入的商品
+    if (favorites.value.length > 0) {
+      isFavoritesOpen.value = true;
+    }
   }
 });
 </script>
@@ -662,6 +724,16 @@ onMounted(() => {
   background-color: #FFF;
 }
 
+.favorite-item-clickable {
+  cursor: pointer;
+  transition: transform 0.15s, background-color 0.15s;
+}
+
+.favorite-item-clickable:hover {
+  background-color: var(--bg-cream);
+  transform: translateY(-2px);
+}
+
 .cart-item-img {
   width: 60px;
   height: 60px;
@@ -735,51 +807,30 @@ onMounted(() => {
   margin-top: 10px;
 }
 
-/* 手機版專屬已售出按鈕 */
-.mobile-only-sold {
-  display: none;
-  background-color: var(--bg-pink);
-  border: var(--border-thin);
-  padding: 6px 16px;
-  font-family: var(--font-cute);
-  font-weight: 700;
-  font-size: 0.95rem;
-  color: #D32F2F;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  align-items: center;
-  gap: 6px;
-  box-shadow: 2px 2px 0px var(--color-wood);
-  transition: transform 0.1s;
-}
-
-.mobile-only-sold:hover {
-  transform: translate(-1px, -1px);
-  box-shadow: 3px 3px 0px var(--color-wood);
-}
-
-.mobile-only-sold:active {
-  transform: translate(1px, 1px);
-  box-shadow: 1px 1px 0px var(--color-wood);
-}
-
-.mobile-only-sold.active {
-  background-color: #FF8A8A;
-  color: white;
-  border-color: var(--color-wood);
-}
-
 .pc-only {
   display: inline-block;
 }
 
+.mobile-only {
+  display: none !important;
+}
+
 @media (max-width: 768px) {
+  .pc-only {
+    display: none !important;
+  }
+
+  .mobile-only {
+    display: inline-block !important;
+  }
+
   .header-container {
     display: grid;
     grid-template-columns: 1fr auto;
     grid-template-rows: auto auto;
     gap: 12px 10px;
     align-items: center;
+    width: 100%;
   }
   
   .logo-wrapper {
@@ -790,41 +841,47 @@ onMounted(() => {
   
   .header-right {
     grid-column: 2 / 3;
-    grid-row: 1 / 3;
+    grid-row: 1 / 2;
+    justify-self: end;
     display: flex;
-    flex-direction: column;
-    gap: 6px;
-    align-items: stretch;
-    width: 100px;
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+    width: auto;
   }
   
-  .cart-trigger-btn, .mobile-only-sold {
-    width: 100%;
-    padding: 6px 10px;
+  .cart-trigger-btn {
+    width: auto;
+    padding: 6px 12px;
     font-size: 0.85rem;
     justify-content: center;
   }
   
-  .mobile-only-sold {
-    display: inline-flex !important;
-  }
-  
-  .pc-only {
-    display: none !important;
-  }
-  
   .nav-links {
-    grid-column: 1 / 2;
+    grid-column: 1 / 3;
     grid-row: 2 / 3;
     display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    justify-content: flex-start;
+    gap: 8px;
+    overflow-x: auto;
     width: 100%;
+    padding: 4px 10px 8px 10px;
+    margin: 0;
+    justify-content: flex-start;
+    flex-wrap: nowrap; /* 強制橫向不折行 */
+    -webkit-overflow-scrolling: touch;
+    
+    /* 隱藏滾動條 */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .nav-links::-webkit-scrollbar {
+    display: none;
   }
   
   .nav-btn {
-    padding: 5px 8px;
+    flex-shrink: 0; /* 禁止按鈕被擠壓收縮 */
+    padding: 6px 12px;
     font-size: 0.85rem;
   }
 }
