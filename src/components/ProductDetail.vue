@@ -141,10 +141,21 @@ const getProductFavoritesCount = computed(() => {
 
 const activeImage = ref('');
 
+// 取得正確的圖片靜態資源 URL，防 GitHub Pages 破圖
+const getImageUrl = (urlStr) => {
+  if (!urlStr) return '';
+  const firstUrl = urlStr.trim();
+  if (firstUrl.startsWith('http://') || firstUrl.startsWith('https://') || firstUrl.startsWith('data:')) {
+    return firstUrl;
+  }
+  const base = import.meta.env.BASE_URL || '/';
+  return `${base}${firstUrl.replace(/^\//, '')}`;
+};
+
 // 圖片清單
 const imagesList = computed(() => {
   if (!props.product || !props.product.image_urls) return [];
-  const list = props.product.image_urls.split(',').map(url => url.trim()).filter(Boolean);
+  const list = props.product.image_urls.split(',').map(url => url.trim()).filter(Boolean).map(getImageUrl);
   
   // 如果商品只有一張圖，我們就模擬多張細節圖（用原圖，以達到畫廊效果）
   if (list.length === 1) {
@@ -156,7 +167,7 @@ const imagesList = computed(() => {
 // 當商品改變時，重設 activeImage 為第一張圖片
 watch(() => props.product, (newProduct) => {
   if (newProduct) {
-    const list = newProduct.image_urls.split(',').map(url => url.trim()).filter(Boolean);
+    const list = newProduct.image_urls.split(',').map(url => url.trim()).filter(Boolean).map(getImageUrl);
     activeImage.value = list[0] || '';
   }
 }, { immediate: true });

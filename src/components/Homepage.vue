@@ -69,7 +69,7 @@
               {{ isProductFavorited(product) ? '❤️' : '🤍' }}
             </button>
 
-            <img :src="product.image_urls.split(',')[0]" :alt="product.product_name" class="product-img" />
+            <img :src="getImageUrl(product.image_urls)" :alt="product.product_name" class="product-img" />
             <div v-if="product.status === 'sold'" class="sold-overlay">
               <span class="sold-text">已售出</span>
             </div>
@@ -134,6 +134,17 @@ const getCategoryLabel = (cat) => {
     grocery: '雜貨小舖'
   };
   return labels[cat] || cat;
+};
+
+// 取得正確的圖片靜態資源 URL，防 GitHub Pages 破圖
+const getImageUrl = (urlStr) => {
+  if (!urlStr) return '';
+  const firstUrl = urlStr.split(',')[0].trim();
+  if (firstUrl.startsWith('http://') || firstUrl.startsWith('https://') || firstUrl.startsWith('data:')) {
+    return firstUrl;
+  }
+  const base = import.meta.env.BASE_URL || '/';
+  return `${base}${firstUrl.replace(/^\//, '')}`;
 };
 </script>
 

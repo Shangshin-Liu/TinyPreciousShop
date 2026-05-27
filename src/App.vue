@@ -111,7 +111,7 @@
             @click="goToProductDetail(item.id)"
             title="點擊查看商品詳情"
           >
-            <img :src="item.image_urls.split(',')[0]" :alt="item.product_name" class="cart-item-img" />
+            <img :src="getImageUrl(item.image_urls)" :alt="item.product_name" class="cart-item-img" />
             <div class="cart-item-info">
               <h4 class="cart-item-name">{{ item.product_name }}</h4>
               <div class="cart-item-price">NT$ {{ item.price }}</div>
@@ -421,6 +421,17 @@ const toggleFavorite = (product) => {
       }
     }
   }
+};
+
+// 取得正確的圖片靜態資源 URL，防 GitHub Pages 破圖
+const getImageUrl = (urlStr) => {
+  if (!urlStr) return '';
+  const firstUrl = urlStr.split(',')[0].trim();
+  if (firstUrl.startsWith('http://') || firstUrl.startsWith('https://') || firstUrl.startsWith('data:')) {
+    return firstUrl;
+  }
+  const base = import.meta.env.BASE_URL || '/';
+  return `${base}${firstUrl.replace(/^\//, '')}`;
 };
 
 // 複製分享連結
