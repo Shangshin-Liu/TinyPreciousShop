@@ -1,0 +1,475 @@
+:root {
+  /* 可愛吉伊卡哇風格配色 */
+  --bg-warm: #FFFDF9;
+  --bg-cream: #FCF8E3;
+  --bg-pink: #FFE3E3;
+  --bg-mint: #E8F5E9;
+  --color-wood: #5A4535;
+  --color-wood-light: #8E7A6B;
+  --color-accent: #FF8A8A;
+  --color-accent-hover: #FF6B6B;
+  --color-sold: #BDBDBD;
+  --font-cute: 'Quicksand', 'Noto Sans TC', sans-serif;
+
+  /* 可愛風的卡片樣式變數 */
+  --border-thick: 3px solid var(--color-wood);
+  --border-thin: 2px solid var(--color-wood);
+  --shadow-flat: 5px 5px 0px var(--color-wood);
+  --shadow-flat-hover: 7px 7px 0px var(--color-wood);
+  --shadow-flat-pressed: 1px 1px 0px var(--color-wood);
+  --radius-lg: 24px;
+  --radius-md: 16px;
+  --radius-sm: 8px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-cute);
+  background-color: var(--bg-warm);
+  color: var(--color-wood);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 網頁背景可愛點綴 (吉伊卡哇風格的波點底紋) */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background-image: radial-gradient(rgba(90, 69, 53, 0.03) 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+  pointer-events: none;
+}
+
+/* 可愛標題與字體 */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  color: var(--color-wood);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* 容器 */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* 可愛風格按鈕 */
+.btn-cute {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 24px;
+  font-family: var(--font-cute);
+  font-weight: 700;
+  font-size: 1rem;
+  border-radius: var(--radius-md);
+  border: var(--border-thick);
+  background-color: var(--bg-cream);
+  color: var(--color-wood);
+  cursor: pointer;
+  box-shadow: var(--shadow-flat);
+  transition: all 0.15s ease-in-out;
+  user-select: none;
+}
+
+.btn-cute:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--shadow-flat-hover);
+}
+
+.btn-cute:active {
+  transform: translate(3px, 3px);
+  box-shadow: var(--shadow-flat-pressed);
+}
+
+.btn-cute.btn-primary {
+  background-color: var(--bg-pink);
+}
+
+.btn-cute.btn-secondary {
+  background-color: #FFF;
+}
+
+.btn-cute.btn-disabled {
+  background-color: var(--color-sold);
+  color: #757575;
+  box-shadow: none;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-cute.btn-disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* 可愛標籤 */
+.badge {
+  display: inline-block;
+  padding: 4px 12px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  border-radius: 50px;
+  border: var(--border-thin);
+  background-color: #FFF;
+  color: var(--color-wood);
+}
+
+.badge.badge-pink {
+  background-color: var(--bg-pink);
+}
+
+.badge.badge-cream {
+  background-color: var(--bg-cream);
+}
+
+.badge.badge-mint {
+  background-color: var(--bg-mint);
+}
+
+.badge.badge-sold {
+  background-color: #EEE;
+  color: #888;
+  border-color: #888;
+}
+
+/* 療癒系卡片 */
+.card-cute {
+  background-color: #FFF;
+  border: var(--border-thick);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-flat);
+  transition: all 0.2s ease-in-out;
+  overflow: hidden;
+  position: relative;
+}
+
+.card-cute:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-flat-hover);
+}
+
+/* input 與 select 可愛化 */
+.input-cute {
+  width: 100%;
+  padding: 10px 16px;
+  font-family: var(--font-cute);
+  font-size: 1rem;
+  color: var(--color-wood);
+  border: var(--border-thin);
+  border-radius: var(--radius-md);
+  background-color: #FFF;
+  outline: none;
+  box-shadow: inset 1px 1px 3px rgba(90, 69, 53, 0.1);
+  transition: border-color 0.2s;
+}
+
+.input-cute:focus {
+  border-color: var(--color-accent);
+}
+
+textarea.input-cute {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Modal 彈出視窗可愛化 */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(90, 69, 53, 0.4);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modal-content {
+  background-color: var(--bg-warm);
+  border: var(--border-thick);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-flat);
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 30px;
+  position: relative;
+  animation: scaleUp 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* 關閉按鈕 */
+.modal-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: var(--border-thin);
+  background-color: var(--bg-pink);
+  color: var(--color-wood);
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 2px 2px 0 var(--color-wood);
+  transition: transform 0.1s;
+}
+
+.modal-close:hover {
+  transform: scale(1.1);
+}
+
+.modal-close:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 var(--color-wood);
+}
+
+/* 網格系統 (PC 與手機板均固定為一排 3 個商品) */
+.grid-products {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 25px;
+}
+
+@media (max-width: 900px) {
+  .grid-products {
+    gap: 16px;
+  }
+  .product-info {
+    padding: 10px;
+    gap: 6px;
+  }
+  .product-name {
+    font-size: 0.95rem;
+  }
+  .product-price {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 580px) {
+  .grid-products {
+    gap: 8px !important;
+  }
+  .product-info {
+    padding: 6px;
+    gap: 2px;
+  }
+  .category-tag {
+    font-size: 0.7rem;
+    padding: 1px 6px;
+  }
+  .product-name {
+    font-size: 0.8rem;
+  }
+  .product-price {
+    font-size: 0.8rem;
+  }
+  .product-footer {
+    padding-top: 4px;
+  }
+  .edit-pencil-btn {
+    width: 24px;
+    height: 24px;
+    font-size: 0.75rem;
+    top: 5px;
+    right: 5px;
+    box-shadow: 1px 1px 0px var(--color-wood);
+  }
+}
+
+/* 全域商品小卡統一格式 (以娃娃區商品卡片為標準) */
+.product-card {
+  cursor: pointer;
+  background-color: #FFF;
+  display: flex;
+  flex-direction: column;
+  border: var(--border-thick);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-flat);
+  transition: all 0.2s ease-in-out;
+  overflow: hidden;
+  position: relative;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-flat-hover);
+}
+
+.product-img-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 100%; /* 1:1 正方形 */
+  overflow: hidden;
+  border-bottom: var(--border-thick);
+  background-color: var(--bg-cream);
+}
+
+.product-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-img {
+  transform: scale(1.04);
+}
+
+.sold-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(90, 69, 53, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sold-text {
+  background-color: var(--color-sold);
+  color: #FFF;
+  border: var(--border-thin);
+  border-radius: 8px;
+  padding: 6px 16px;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.product-info {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-grow: 1;
+  text-align: left;
+}
+
+.category-tag {
+  align-self: flex-start;
+  font-size: 0.8rem;
+  padding: 2px 10px;
+}
+
+.product-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.4;
+  margin-top: 2px;
+  color: var(--color-wood);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.product-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 2px dashed rgba(90, 69, 53, 0.12);
+}
+
+.product-price {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.detail-link-arrow {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-wood-light);
+  transition: transform 0.15s;
+}
+
+.product-card:hover .detail-link-arrow {
+  transform: translateX(3px);
+  color: var(--color-accent);
+}
+
+/* 編輯鉛筆按鈕 */
+.edit-pencil-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: var(--border-thin);
+  background-color: var(--bg-cream);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 2px 2px 0px var(--color-wood);
+  transition: transform 0.1s;
+  font-size: 0.95rem;
+}
+
+.edit-pencil-btn:hover {
+  transform: scale(1.1);
+}
+
+/* 滾動條樣式可愛化 */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-warm);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-wood-light);
+  border-radius: 10px;
+  border: 2px solid var(--bg-warm);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-wood);
+}
