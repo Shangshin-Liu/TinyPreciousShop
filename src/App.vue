@@ -124,8 +124,8 @@
               <span>收藏總數：</span>
               <span>{{ favoritesCount }} 件</span>
             </div>
-            <button class="btn-cute btn-primary checkout-btn" @click="copyShareLink">
-              🔗 複製分享連結
+            <button class="btn-cute btn-primary checkout-btn" @click="openContactModal">
+              喜歡這些小物嗎？歡迎聯絡我 ❤️
             </button>
           </div>
         </div>
@@ -140,6 +140,49 @@
       @save="saveProduct"
       @delete="deleteProduct"
     />
+    <!-- 聯絡賣家 Modal -->
+    <div class="modal-overlay" v-if="isContactModalOpen" @click.self="closeContactModal">
+      <div class="modal-content contact-modal-content card-cute">
+        <button class="modal-close" @click="closeContactModal">×</button>
+        <h3 class="modal-title" style="text-align: center; margin-bottom: 20px; font-family: var(--font-cute);">💌 聯絡賣家</h3>
+        
+        <p style="text-align: center; margin-bottom: 15px; color: var(--color-wood-light); font-size: 0.9rem;">
+          喜歡這些精選小物嗎？<br class="mobile-only">歡迎透過下方資訊聯絡我！
+        </p>
+
+        <!-- 收藏商品快照框 -->
+        <div class="contact-fav-snapshot">
+          <div 
+            class="snapshot-item" 
+            v-for="item in favorites" 
+            :key="item.id"
+          >
+            <img :src="getImageUrl(item.image_urls)" :alt="item.product_name" class="snapshot-img" />
+            <div class="snapshot-info">
+              <h4 class="snapshot-name" :title="item.product_name">{{ item.product_name }}</h4>
+              <div class="snapshot-price">NT$ {{ item.price }}</div>
+            </div>
+            <button class="snapshot-remove" @click.stop="toggleFavorite(item)" title="移除">🗑️</button>
+          </div>
+        </div>
+
+        <!-- 聯絡方式 -->
+        <div class="seller-contact-info">
+          <div class="contact-row">
+            <span class="contact-label">💬 LINE：</span>
+            <span class="contact-value">test@123</span>
+          </div>
+          <div class="contact-row">
+            <span class="contact-label">✉️ Email：</span>
+            <span class="contact-value">test123@gmail.com</span>
+          </div>
+          <div class="contact-row">
+            <span class="contact-label">📞 電話：</span>
+            <span class="contact-value">0912-3456789</span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -158,6 +201,7 @@ const currentCategory = ref('accessories');
 const selectedProductId = ref(null);
 const favorites = ref([]);
 const isFavoritesOpen = ref(false);
+const isContactModalOpen = ref(false);
 
 // 管理員暗門狀態
 const isAdmin = ref(false);
@@ -374,6 +418,15 @@ const loadContributedFavs = () => {
       prod.favoritesCount = (parseInt(prod.favoritesCount) || 0) + 1;
     }
   });
+};
+
+const openContactModal = () => {
+  isContactModalOpen.value = true;
+  isFavoritesOpen.value = false;
+};
+
+const closeContactModal = () => {
+  isContactModalOpen.value = false;
 };
 
 const toggleFavorites = () => {
@@ -835,6 +888,10 @@ onMounted(() => {
     display: inline-block !important;
   }
 
+  br.mobile-only {
+    display: inline !important;
+  }
+
   .header-container {
     display: grid;
     grid-template-columns: 1fr auto;
@@ -918,5 +975,111 @@ onMounted(() => {
   .logo-emoji {
     font-size: 1.4rem;
   }
+}
+
+/* 聯絡賣家 Modal */
+.contact-modal-content {
+  max-width: 480px;
+  width: 90%;
+  padding: 25px;
+}
+
+.contact-fav-snapshot {
+  border: var(--border-thick);
+  border-radius: var(--radius-md);
+  background-color: #FFF;
+  padding: 15px;
+  max-height: 200px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.snapshot-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 2px dashed rgba(90, 69, 53, 0.12);
+}
+
+.snapshot-item:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.snapshot-img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border: var(--border-thin);
+  border-radius: var(--radius-sm);
+}
+
+.snapshot-info {
+  flex-grow: 1;
+  text-align: left;
+}
+
+.snapshot-name {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-wood);
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.snapshot-price {
+  font-size: 0.85rem;
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+.snapshot-remove {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: transform 0.1s;
+}
+
+.snapshot-remove:hover {
+  transform: scale(1.15);
+}
+
+.seller-contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 15px;
+  background-color: var(--bg-cream);
+  border: var(--border-thin);
+  border-radius: var(--radius-md);
+  align-items: center;
+}
+
+.contact-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.95rem;
+  font-family: var(--font-cute);
+  font-weight: 700;
+  color: var(--color-wood);
+}
+
+.contact-label {
+  color: var(--color-wood-light);
+}
+
+.contact-value {
+  color: var(--color-wood);
+  user-select: all;
 }
 </style>

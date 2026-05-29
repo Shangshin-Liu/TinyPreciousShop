@@ -416,4 +416,47 @@ describe('Admin Easter Egg, Add, Delete & Search Flow', () => {
     expect(wrapper.vm.currentPage).toBe('detail');
     expect(wrapper.vm.selectedProductId).toBe(product.id);
   });
+
+  it('聯絡賣家 Modal 應能正確開啟、顯示已收藏商品的快照及聯絡方式，且支援在 Modal 中移除收藏', async () => {
+    const wrapper = mount(App);
+
+    // 1. 收藏一個商品
+    const product = wrapper.vm.products.find(p => p.status === 'active');
+    await wrapper.vm.toggleFavorite(product);
+    expect(wrapper.vm.favorites.length).toBe(1);
+
+    // 2. 開啟收藏抽屜，點擊聯絡賣家按鈕
+    await wrapper.vm.toggleFavorites();
+    expect(wrapper.vm.isFavoritesOpen).toBe(true);
+    expect(wrapper.vm.isContactModalOpen).toBe(false);
+
+    const contactBtn = wrapper.find('.checkout-btn');
+    expect(contactBtn.exists()).toBe(true);
+    await contactBtn.trigger('click');
+
+    // 驗證：收藏抽屜關閉，且聯絡 Modal 被開啟
+    expect(wrapper.vm.isFavoritesOpen).toBe(false);
+    expect(wrapper.vm.isContactModalOpen).toBe(true);
+
+    // 3. 驗證聯絡 Modal 中的快照清單
+    const snapshotItem = wrapper.find('.snapshot-item');
+    expect(snapshotItem.exists()).toBe(true);
+    expect(snapshotItem.find('.snapshot-name').text()).toContain(product.product_name);
+
+    // 4. 驗證聯絡資訊
+    const contactInfo = wrapper.find('.seller-contact-info');
+    expect(contactInfo.exists()).toBe(true);
+    expect(contactInfo.text()).toContain('test@123');
+    expect(contactInfo.text()).toContain('test123@gmail.com');
+    expect(contactInfo.text()).toContain('0912-3456789');
+
+    // 5. 在快照中點擊垃圾桶移除商品
+    const removeBtn = wrapper.find('.snapshot-remove');
+    expect(removeBtn.exists()).toBe(true);
+    await removeBtn.trigger('click');
+
+    // 驗證商品被移出，快照消失，且收藏為空
+    expect(wrapper.vm.favorites.length).toBe(0);
+    expect(wrapper.find('.snapshot-item').exists()).toBe(false);
+  });
 });
