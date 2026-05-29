@@ -149,6 +149,12 @@ a {
   border-color: #888;
 }
 
+.badge.badge-gold {
+  background-color: #FFF5CC;
+  border-color: #FFE066;
+  color: #B38600;
+}
+
 /* 療癒系卡片 */
 .card-cute {
   background-color: #FFF;
@@ -472,4 +478,78 @@ textarea.input-cute {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-wood);
+}
+
+/* 極窄螢幕 (如 iPhone 15/16/17 等行動裝置，寬度小於 480px) 的商品卡片極致微調 */
+@media (max-width: 480px) {
+  /* 將 gap 與 padding 降到最低，釋放寶貴空間 */
+  .grid-products {
+    gap: 6px !important;
+  }
+
+  .product-card {
+    border-width: 2px !important; /* 邊框變細 */
+    border-radius: var(--radius-md) !important;
+  }
+
+  .product-img-wrapper {
+    border-bottom-width: 2px !important;
+  }
+
+  .product-info {
+    padding: 5px !important; /* 內距縮小 */
+    gap: 3px !important;
+  }
+
+  /* 調整標籤的排列與大小 */
+  .product-info > div {
+    flex-direction: column !important; /* 讓標籤與關注度改為垂直堆疊，防橫向擠壓溢出 */
+    align-items: flex-start !important;
+    gap: 3px !important;
+    width: 100%;
+  }
+
+  .category-tag {
+    font-size: 0.65rem !important;
+    padding: 1px 5px !important;
+    line-height: 1.1;
+    margin: 0 !important;
+  }
+  
+  /* 精簡關注度標籤文字，防止太長折行跑版 */
+  .category-tag[style*="background-color: var(--bg-mint)"] {
+    font-size: 0.65rem !important;
+    padding: 1px 5px !important;
+  }
+
+  /* 商品名稱：縮小字體，限制最多顯示 2 行，讓文字有喘息空間但維持整齊 */
+  .product-name {
+    font-size: 0.72rem !important;
+    line-height: 1.25 !important;
+    height: 2.5em !important; /* 固定兩行高度，防止商品卡片因名稱長短高度不一 */
+    -webkit-line-clamp: 2 !important;
+    margin-top: 1px !important;
+  }
+
+  /* 底部 footer 與價格 */
+  .product-footer {
+    padding-top: 4px !important;
+    margin-top: 2px !important;
+  }
+
+  .product-price {
+    font-size: 0.75rem !important;
+  }
+
+  /* 隱藏右下角箭頭，手機上皆為直接點擊卡片，箭頭會擠壓價格空間 */
+  .detail-link-arrow {
+    display: none !important;
+  }
+
+  /* 已售出覆蓋層 */
+  .sold-text {
+    font-size: 0.65rem !important;
+    padding: 3px 8px !important;
+    border-radius: 4px !important;
+  }
 }

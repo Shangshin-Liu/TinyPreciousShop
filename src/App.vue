@@ -87,8 +87,8 @@
     <!-- 置底頁尾 -->
     <footer class="app-footer">
       <div class="container footer-content">
-        <p>© 2026 TinyPreciousShop. 療癒系二手小物與手作雜貨 💖</p>
-        <p class="footer-sub">本網站為簡易二手商品販售系統，使用無頭式架構與 Google Sheets 資料庫。</p>
+        <p>© 2026 TinyPreciousShop.<br class="mobile-only"> 療癒系二手小物與手作雜貨 💖</p>
+        <p class="footer-sub">本網站為簡易二手商品販售系統，<br class="mobile-only">使用無頭式架構與 Google Sheets 資料庫。</p>
       </div>
     </footer>
 
@@ -894,6 +894,20 @@ onMounted(() => {
     flex-shrink: 0; /* 禁止按鈕被擠壓收縮 */
     padding: 6px 12px;
     font-size: 0.85rem;
+  }
+
+  .app-footer {
+    padding: 20px 10px !important;
+  }
+  .footer-content {
+    gap: 6px !important;
+  }
+  .app-footer p {
+    font-size: 0.8rem !important;
+    line-height: 1.45 !important;
+  }
+  .footer-sub {
+    font-size: 0.7rem !important;
   }
 }
 

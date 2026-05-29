@@ -4,12 +4,7 @@
     <section class="hero-section">
       <div class="hero-content">
         <h2 class="hero-title">遇見屬於你的小幸運 ✨</h2>
-        <p class="hero-subtitle">讓可愛的小物、溫柔的二手雜貨，再次溫暖你的日常生活。</p>
-      </div>
-      <div class="hero-decoration">
-        <div class="cute-bubble bubble-1">🧸</div>
-        <div class="cute-bubble bubble-2">💍</div>
-        <div class="cute-bubble bubble-3">🌸</div>
+        <p class="hero-subtitle">讓可愛的小物、溫柔的二手雜貨，<br class="mobile-only">再次溫暖你的日常生活。</p>
       </div>
     </section>
 
@@ -22,7 +17,7 @@
           <span class="no-hot-emoji">💍</span>
           <p>目前沒有飾品館的熱門商品 🌸</p>
         </div>
-        <div v-else :class="['hot-products-container', accessoriesHotProducts.length > 3 ? 'slider-mode' : 'center-mode']">
+        <div v-else :class="['hot-products-container', accessoriesHotProducts.length >= 3 ? 'slider-mode' : 'center-mode']">
           <div 
             class="product-card"
             v-for="product in accessoriesHotProducts" 
@@ -59,6 +54,7 @@
             <div class="product-info">
               <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
                 <span class="badge badge-pink category-tag">{{ getCategoryLabel(product.category) }}</span>
+                <span v-if="isAdmin && product.isHot" class="badge badge-gold category-tag">⭐ 熱門</span>
                 <span v-if="getProductFavoritesCount(product) > 0" class="badge badge-mint category-tag" style="background-color: var(--bg-mint); border-color: #A3D9C9; font-size: 0.8rem; padding: 2px 10px;">🔥 關注度：{{ getProductFavoritesCount(product) }}</span>
               </div>
               <h4 class="product-name" :title="product.product_name">{{ product.product_name }}</h4>
@@ -79,7 +75,7 @@
           <span class="no-hot-emoji">🧸</span>
           <p>目前沒有娃娃區的熱門商品 🌸</p>
         </div>
-        <div v-else :class="['hot-products-container', plushiesHotProducts.length > 3 ? 'slider-mode' : 'center-mode']">
+        <div v-else :class="['hot-products-container', plushiesHotProducts.length >= 3 ? 'slider-mode' : 'center-mode']">
           <div 
             class="product-card"
             v-for="product in plushiesHotProducts" 
@@ -116,6 +112,7 @@
             <div class="product-info">
               <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
                 <span class="badge badge-pink category-tag">{{ getCategoryLabel(product.category) }}</span>
+                <span v-if="isAdmin && product.isHot" class="badge badge-gold category-tag">⭐ 熱門</span>
                 <span v-if="getProductFavoritesCount(product) > 0" class="badge badge-mint category-tag" style="background-color: var(--bg-mint); border-color: #A3D9C9; font-size: 0.8rem; padding: 2px 10px;">🔥 關注度：{{ getProductFavoritesCount(product) }}</span>
               </div>
               <h4 class="product-name" :title="product.product_name">{{ product.product_name }}</h4>
@@ -136,7 +133,7 @@
           <span class="no-hot-emoji">☕</span>
           <p>目前沒有雜貨小舖的熱門商品 🌸</p>
         </div>
-        <div v-else :class="['hot-products-container', groceryHotProducts.length > 3 ? 'slider-mode' : 'center-mode']">
+        <div v-else :class="['hot-products-container', groceryHotProducts.length >= 3 ? 'slider-mode' : 'center-mode']">
           <div 
             class="product-card"
             v-for="product in groceryHotProducts" 
@@ -173,6 +170,7 @@
             <div class="product-info">
               <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
                 <span class="badge badge-pink category-tag">{{ getCategoryLabel(product.category) }}</span>
+                <span v-if="isAdmin && product.isHot" class="badge badge-gold category-tag">⭐ 熱門</span>
                 <span v-if="getProductFavoritesCount(product) > 0" class="badge badge-mint category-tag" style="background-color: var(--bg-mint); border-color: #A3D9C9; font-size: 0.8rem; padding: 2px 10px;">🔥 關注度：{{ getProductFavoritesCount(product) }}</span>
               </div>
               <h4 class="product-name" :title="product.product_name">{{ product.product_name }}</h4>
@@ -259,54 +257,49 @@ const getImageUrl = (urlStr) => {
   padding: 10px 0;
 }
 
-/* Hero Section */
+/* Hero Section - 溫馨插圖背景與毛玻璃卡片 */
 .hero-section {
   position: relative;
-  background-color: var(--bg-cream);
+  background-image: url('/images/hero_banner.png');
+  background-size: cover;
+  background-position: center;
   border: var(--border-thick);
   border-radius: var(--radius-lg);
-  padding: 50px 30px;
+  padding: 60px 20px;
   text-align: center;
   overflow: hidden;
   box-shadow: var(--shadow-flat);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 220px;
+}
+
+.hero-content {
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: var(--radius-lg);
+  padding: 25px 35px;
+  box-shadow: 0 8px 32px 0 rgba(90, 69, 53, 0.12);
+  max-width: 600px;
+  width: 100%;
 }
 
 .hero-title {
-  font-size: 2.2rem;
+  font-size: 2rem;
   margin-bottom: 12px;
   color: var(--color-wood);
+  font-weight: 700;
+  text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.8);
 }
 
 .hero-subtitle {
-  font-size: 1rem;
+  font-size: 0.95rem;
   color: var(--color-wood-light);
   font-weight: 500;
-  max-width: 550px;
-  margin: 0 auto;
-}
-
-.hero-decoration {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  pointer-events: none;
-}
-
-.cute-bubble {
-  position: absolute;
-  font-size: 1.8rem;
-  animation: float 4s ease-in-out infinite;
-}
-
-.bubble-1 { top: 20px; left: 20px; animation-delay: 0s; }
-.bubble-2 { bottom: 20px; right: 30px; animation-delay: 1.5s; }
-.bubble-3 { top: 30px; right: 50px; animation-delay: 0.7s; }
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-8px) rotate(8deg); }
+  line-height: 1.5;
 }
 
 /* Sections */
@@ -353,19 +346,38 @@ const getImageUrl = (urlStr) => {
   width: 100%;
 }
 
-/* 1. 左右滑動模式 (當數量 > 3 時) */
+/* 1. 左右滑動模式 */
 .hot-products-container.slider-mode {
   display: flex;
+  flex-wrap: nowrap !important;
   gap: 18px;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   padding: 10px 4px 20px 4px; /* 留緩衝給卡片陰影與 hover 位移 */
   margin: -10px -4px -20px -4px;
-  scrollbar-width: none; /* Firefox 隱藏滾動條 */
 }
 
-.hot-products-container.slider-mode::-webkit-scrollbar {
-  display: none; /* Chrome/Safari 隱藏滾動條 */
+/* 自訂 Webkit 橫向滾動條 (PC 寬度下) - 方便滑鼠拖曳 */
+@media (min-width: 769px) {
+  .hot-products-container.slider-mode {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-wood-light) var(--bg-warm);
+  }
+  .hot-products-container.slider-mode::-webkit-scrollbar {
+    height: 6px;
+    display: block !important;
+  }
+  .hot-products-container.slider-mode::-webkit-scrollbar-track {
+    background: var(--bg-warm);
+    border-radius: 10px;
+  }
+  .hot-products-container.slider-mode::-webkit-scrollbar-thumb {
+    background: var(--color-wood-light);
+    border-radius: 10px;
+  }
+  .hot-products-container.slider-mode::-webkit-scrollbar-thumb:hover {
+    background: var(--color-wood);
+  }
 }
 
 .hot-products-container.slider-mode .product-card {
@@ -391,6 +403,10 @@ const getImageUrl = (urlStr) => {
 @media (max-width: 768px) {
   .hot-products-container.slider-mode {
     gap: 8px;
+    scrollbar-width: none; /* 行動裝置隱藏滾動條 */
+  }
+  .hot-products-container.slider-mode::-webkit-scrollbar {
+    display: none !important; /* 行動裝置隱藏滾動條 */
   }
   .hot-products-container.slider-mode .product-card {
     flex: 0 0 calc(33.333% - 5.3px);
@@ -403,10 +419,32 @@ const getImageUrl = (urlStr) => {
     flex: 0 1 calc(33.333% - 5.3px);
   }
   .hero-section {
-    padding: 30px 15px;
+    padding: 25px 12px !important;
+    min-height: 160px !important;
+    background-position: right center !important; /* 背景圖置右露出，防遮圖 */
+    justify-content: flex-start !important; /* 內容物靠左，與右側插圖錯開 */
+  }
+  .hero-content {
+    background-color: rgba(255, 255, 255, 0.45) !important; /* 調低透明度 */
+    backdrop-filter: blur(2px) !important; /* 輕微模糊 */
+    -webkit-backdrop-filter: blur(2px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    padding: 12px 15px !important;
+    max-width: 72% !important; /* 給右側背景留出完整空間 */
+    text-align: left !important;
+    box-shadow: 0 4px 16px 0 rgba(90, 69, 53, 0.08) !important;
   }
   .hero-title {
-    font-size: 1.8rem;
+    font-size: clamp(1.1rem, 5vw, 1.45rem) !important;
+    line-height: 1.2 !important;
+    white-space: nowrap !important; /* 強制不折行 */
+  }
+  .hero-subtitle {
+    font-size: 0.76rem !important;
+    line-height: 1.35 !important;
+  }
+  .cute-bubble {
+    display: none !important;
   }
 }
 
@@ -442,5 +480,26 @@ const getImageUrl = (urlStr) => {
 
 .favorite-heart-btn.is-favorited {
   background-color: var(--bg-pink);
+}
+
+/* 極窄行動裝置 (如 iPhone 17) 按鈕尺寸與定位微縮 */
+@media (max-width: 480px) {
+  .favorite-heart-btn {
+    width: 22px !important;
+    height: 22px !important;
+    font-size: 0.7rem !important;
+    top: 5px !important;
+    left: 5px !important;
+    box-shadow: 1px 1px 0px var(--color-wood) !important;
+  }
+  
+  .edit-pencil-btn {
+    width: 22px !important;
+    height: 22px !important;
+    font-size: 0.7rem !important;
+    top: 5px !important;
+    right: 5px !important;
+    box-shadow: 1px 1px 0px var(--color-wood) !important;
+  }
 }
 </style>

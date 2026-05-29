@@ -156,6 +156,7 @@
             <div class="product-info">
               <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
                 <span class="badge badge-pink category-tag">{{ getCategoryLabel(product.category) }}</span>
+                <span v-if="isAdmin && product.isHot" class="badge badge-gold category-tag">⭐ 熱門</span>
                 <span v-if="product.status === 'hidden'" class="badge badge-sold" style="font-size: 0.75rem; padding: 2px 8px;">隱藏中</span>
                 <span v-if="getProductFavoritesCount(product) > 0" class="badge badge-mint category-tag" style="background-color: var(--bg-mint); border-color: #A3D9C9;">🔥 關注度：{{ getProductFavoritesCount(product) }}</span>
               </div>
@@ -531,6 +532,27 @@ const filteredProducts = computed(() => {
   }
   .filter-sidebar.mobile-hidden {
     display: none !important;
+  }
+}
+
+/* 極窄行動裝置 (如 iPhone 17) 按鈕尺寸與定位微縮 */
+@media (max-width: 480px) {
+  .favorite-heart-btn {
+    width: 22px !important;
+    height: 22px !important;
+    font-size: 0.7rem !important;
+    top: 5px !important;
+    left: 5px !important;
+    box-shadow: 1px 1px 0px var(--color-wood) !important;
+  }
+  
+  .edit-pencil-btn {
+    width: 22px !important;
+    height: 22px !important;
+    font-size: 0.7rem !important;
+    top: 5px !important;
+    right: 5px !important;
+    box-shadow: 1px 1px 0px var(--color-wood) !important;
   }
 }
 </style>
